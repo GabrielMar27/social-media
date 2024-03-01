@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Persoana } from "../../../classes/Clase";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../../functions/dbAcctions";

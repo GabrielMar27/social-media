@@ -3,6 +3,7 @@ import Login from "./components/pages/Login/login";
 import Register from "./components/pages/Register/register";
 import Home from "./components/pages/Home/Home";
 import Profile from "./components/pages/Profile/Profile";
+import NotFound from "./components/pages/NotFound/NotFound";
 import { useEffect, useState } from "react";
 import "./cssStyles/appStyle.css";
 import { User } from "./classes/Clase";
@@ -17,7 +18,8 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>/
         <Route path="/register" element={<Register />}></Route>
-        <Route path="/:idUser/" element={<Profile />}></Route>
+        <Route path="/:idUser" element={<Profile />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </>
   );

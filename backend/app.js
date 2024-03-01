@@ -3,8 +3,9 @@ const cors = require("cors");
 const app = express();
 const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
-const profilePicture = require("./routes/photoUpload");
+const profilePicture = require("./routes/ProfilePictureUp");
 const userProfile = require("./routes/userProfile");
+const multer = require("multer");
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
