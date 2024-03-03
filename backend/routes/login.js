@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../database");
-
 router.post("/", (req, res) => {
   let { email, parola_cont } = req.body;
   email = email.toLowerCase();

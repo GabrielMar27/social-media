@@ -4,6 +4,7 @@ export const routes = {
   register: "/register",
   login: "/login",
   uploadPFP: "/uploadPFP",
+  friendReq: "/friendReq",
 };
 
 export const getRoute = (route) => `${ORIGIN_URL}${route}`;

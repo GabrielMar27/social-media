@@ -6,9 +6,7 @@ const Home = (props) => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    let logged = sessionStorage.getItem("userLoggedIn");
-    setUserLoggedIn(logged);
-    if (!logged) {
+    if (!sessionStorage.getItem("userLoggedIn")) {
       navigate("/login");
     }
   });

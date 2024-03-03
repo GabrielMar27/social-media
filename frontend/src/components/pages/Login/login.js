@@ -12,7 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+//test
+//test
 const defaultTheme = createTheme();
 
 const Login = () => {
@@ -23,7 +24,6 @@ const Login = () => {
     try {
       const response = await loginDB(dataUser);
       const data = response[0][0];
-      console.log(data);
       if (data !== undefined) {
         sessionStorage.setItem("user_id", data.id_user);
         sessionStorage.setItem("userLoggedIn", true);

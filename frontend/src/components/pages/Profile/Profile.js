@@ -1,13 +1,17 @@
 import NavBar from "../../navBar/navBar";
 import { Avatar, Box } from "@mui/material";
 import * as React from "react";
-import { UploadProfilePic } from "../../../functions/dbAcctions";
 import { User } from "../../../classes/Clase";
 import { useParams } from "react-router-dom";
-import { getUserProfile } from "../../../functions/dbAcctions";
+import {
+  getUserProfile,
+  sendFrRequest,
+  UploadProfilePic,
+} from "../../../functions/dbAcctions";
 import NotFound from "../NotFound/NotFound";
 import "./profileStyle.css";
-
+import Button from "@mui/material/Button";
+import io from "socket.io-client";
 const Profile = () => {
   const [user, setUser] = React.useState(User);
   const [id, setId] = React.useState("");
@@ -34,7 +38,7 @@ const Profile = () => {
 
   const zi = data.getDate();
   const infiintareCont = `${zi}-${luna}-${an}`;
-
+  const socket = io.connect("http://localhost:3001");
   React.useEffect(() => {
     const getUser = async () => {
       const data = await getUserProfile(idUser);
@@ -43,6 +47,7 @@ const Profile = () => {
       } else {
         setUser(data.result[0]);
         setId(sessionStorage.user_id);
+        console.log(data.result[0]);
       }
     };
 
@@ -101,6 +106,51 @@ const Profile = () => {
         <Box>
           <h1 className="userData">{user.nume_cont}</h1>
           <h1 className="userData">{infiintareCont}</h1>
+          <Box style={{ display: "flex", justifyContent: "center" }}>
+            {user.id_user !== id ? (
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "310px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  onClick={() => sendFrRequest(id, user.id_user, 0)}
+                >
+                  Send Friend
+                </Button>
+                <Button variant="contained" className="profileActions">
+                  Message
+                </Button>
+              </Box>
+            ) : (
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "310px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  style={{ fontSize: "13px" }}
+                >
+                  Edit Page
+                </Button>
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  style={{ fontSize: "13px" }}
+                >
+                  Make New Post
+                </Button>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
       <Box></Box>

@@ -43,9 +43,14 @@ export default function NavBar() {
     handleMobileMenuClose();
   };
   const goToProfile = () => {
-    console.log(idUser);
     handleMenuClose();
     navigate(`/${idUser}`);
+  };
+  const LogOut = () => {
+    sessionStorage.userLoggedIn = false;
+    sessionStorage.user_id = "";
+    handleMenuClose();
+    navigate(`/login`);
   };
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -68,7 +73,13 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={() => goToProfile()}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          LogOut();
+        }}
+      >
+        Log Out
+      </MenuItem>
     </Menu>
   );
 
@@ -89,19 +100,19 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={() => navigate("/messages")}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge
-            badgeContent={4}
-            color="error"
-            onClick={() => navigate("/messages")}
-          >
+          <Badge badgeContent={4} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/notifications");
+        }}
+      >
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -160,12 +171,9 @@ export default function NavBar() {
               size="large"
               aria-label="show new messages"
               color="inherit"
+              onClick={() => navigate("/messages")}
             >
-              <Badge
-                badgeContent={10}
-                color="error"
-                onClick={() => navigate("/messages")}
-              >
+              <Badge badgeContent={10} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -173,6 +181,9 @@ export default function NavBar() {
               size="large"
               aria-label="show new notifications"
               color="inherit"
+              onClick={() => {
+                navigate("/notifications");
+              }}
             >
               <Badge badgeContent={12} color="error">
                 <NotificationsIcon />
