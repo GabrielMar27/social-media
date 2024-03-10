@@ -7,6 +7,7 @@ import {
   getUserProfile,
   sendFrRequest,
   UploadProfilePic,
+  checkFriendShip,
 } from "../../../functions/dbAcctions";
 import NotFound from "../NotFound/NotFound";
 import "./profileStyle.css";
@@ -18,7 +19,7 @@ const Profile = () => {
   const [notFound, setNotFound] = React.useState(false);
   const { idUser } = useParams();
   const data = new Date(user.inregistrare_cont);
-
+  const [isFriend, setIsFriend] = React.useState();
   const an = data.getFullYear();
   const luni = [
     "Ian",
@@ -38,22 +39,68 @@ const Profile = () => {
 
   const zi = data.getDate();
   const infiintareCont = `${zi}-${luna}-${an}`;
-  const socket = io.connect("http://localhost:3001");
+
   React.useEffect(() => {
     const getUser = async () => {
       const data = await getUserProfile(idUser);
       if (!data.result || Object.keys(data.result).length === 0) {
         setNotFound(true);
       } else {
-        setUser(data.result[0]);
-        setId(sessionStorage.user_id);
-        console.log(data.result[0]);
+        const userProfile = data.result[0];
+        setUser(userProfile);
+        const currentUserId = sessionStorage.user_id;
+        setId(currentUserId);
+
+        if (currentUserId != userProfile.id_user) {
+          const friendStatus = await checkFriendShip(
+            currentUserId,
+            userProfile.id_user
+          );
+          if (friendStatus && friendStatus.stare !== null) {
+            setIsFriend(friendStatus.result[0].stare);
+          } else {
+            setIsFriend(null);
+          }
+        }
       }
     };
-
     getUser();
   }, [idUser]);
-
+  const buttonSwitch = () => {
+    switch (isFriend) {
+      case 0:
+        return (
+          <>
+            {" "}
+            <Button variant="contained" className="profileActions" disabled>
+              Friend Request Sent
+            </Button>
+          </>
+        );
+      case 1:
+        return (
+          <Button variant="contained" className="profileActions">
+            Message
+          </Button>
+        );
+      default:
+        return (
+          <>
+            {" "}
+            <Button
+              variant="contained"
+              className="profileActions"
+              onClick={() => {
+                sendFrRequest(id, user.id_user, 0);
+                window.location.reload();
+              }}
+            >
+              Send Friend
+            </Button>
+          </>
+        );
+    }
+  };
   if (notFound) {
     return <NotFound />;
   }
@@ -111,20 +158,11 @@ const Profile = () => {
               <Box
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   width: "310px",
                 }}
               >
-                <Button
-                  variant="contained"
-                  className="profileActions"
-                  onClick={() => sendFrRequest(id, user.id_user, 0)}
-                >
-                  Send Friend
-                </Button>
-                <Button variant="contained" className="profileActions">
-                  Message
-                </Button>
+                {buttonSwitch()}
               </Box>
             ) : (
               <Box

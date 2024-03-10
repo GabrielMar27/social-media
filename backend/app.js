@@ -6,6 +6,8 @@ const loginRoute = require("./routes/login");
 const profilePicture = require("./routes/ProfilePictureUp");
 const userProfile = require("./routes/userProfile");
 const friendReq = require("./routes/friendReq");
+const checkFriendShip = require("./routes/checkFriendShip");
+const getNotifications = require("./routes/getNotifications");
 const multer = require("multer");
 
 //test
@@ -27,29 +29,31 @@ app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/uploadPFP", profilePicture);
 app.use("/friendReq", friendReq);
+app.use("/checkFriendShip", checkFriendShip);
+app.use("/notifications", getNotifications);
 app.use(userProfile);
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-io.on("connection", (socket) => {
-  socket.on("login", (id) => {
-    socket.id = id;
-    console.log(socket.id);
-  });
-  socket.on("FrReq", (data) => {
-    console.log(data);
-    const sender = data.senderId;
-    const receiver = data.receiverId;
-    console.log("sentFrto" + receiver);
+// io.on("connection", (socket) => {
+//   socket.on("login", (id) => {
+//     socket.id = id;
+//     console.log(socket.id);
+//   });
+//   socket.on("FrReq", (data) => {
+//     console.log(data);
+//     const sender = data.senderId;
+//     const receiver = data.receiverId;
+//     console.log("sentFrto" + receiver);
 
-    socket.broadcast.emit("receiveFr", sender); // Trimiteți notificarea la frontend
-  });
-});
+//     socket.broadcast.emit("receiveFr", sender); // Trimiteți notificarea la frontend
+//   });
+// });
 
 server.listen(3001, () => {
   console.log("Server is running on port 3001");

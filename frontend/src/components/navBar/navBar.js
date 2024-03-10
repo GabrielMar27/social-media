@@ -20,13 +20,15 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { useNotifications } from "../../functions/NotifContext";
 
 export default function NavBar() {
   const [idUser, setIdUser] = React.useState("");
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [messageNotif, setMessageNotif] = React.useState(0);
+  const { notificationCount } = useNotifications();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -102,7 +104,7 @@ export default function NavBar() {
     >
       <MenuItem onClick={() => navigate("/messages")}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={messageNotif} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -118,7 +120,7 @@ export default function NavBar() {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={notificationCount} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -138,6 +140,7 @@ export default function NavBar() {
       </MenuItem>
     </Menu>
   );
+  //for user id
   React.useEffect(() => {
     setIdUser(sessionStorage.user_id);
   }, []);
@@ -173,7 +176,7 @@ export default function NavBar() {
               color="inherit"
               onClick={() => navigate("/messages")}
             >
-              <Badge badgeContent={10} color="error">
+              <Badge badgeContent={messageNotif} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
@@ -185,7 +188,7 @@ export default function NavBar() {
                 navigate("/notifications");
               }}
             >
-              <Badge badgeContent={12} color="error">
+              <Badge badgeContent={notificationCount} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>

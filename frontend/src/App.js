@@ -8,13 +8,14 @@ import Notif from "./components/pages/Notifications/Notif";
 import { useEffect, useState } from "react";
 import "./cssStyles/appStyle.css";
 import { User } from "./classes/Clase";
+import { NotificationProvider } from "./functions/NotifContext";
 function App() {
   const [utilizator, setUtilizator] = useState(User);
   useEffect(() => {
     if (sessionStorage.User) setUtilizator(JSON.parse(sessionStorage.User));
   }, []);
   return (
-    <>
+    <NotificationProvider>
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>/
@@ -23,7 +24,7 @@ function App() {
         <Route path="/notifications" element={<Notif />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
-    </>
+    </NotificationProvider>
   );
 }
 

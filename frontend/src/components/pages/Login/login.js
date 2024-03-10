@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setDataUser((prevState) => {
       if (prevState) {
         const lowercasedValue = ["email"].includes(name)

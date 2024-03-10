@@ -1,7 +1,5 @@
 import axios from "axios";
 import { routes, getRoute } from "../routes";
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:3001");
 export const addNewUser = async (user) => {
   try {
     await axios.post(getRoute(routes.register), user);
@@ -32,7 +30,6 @@ export const UploadProfilePic = async (file, id) => {
 export const loginDB = async (dateLog) => {
   try {
     const response = await axios.post(getRoute(routes.login), dateLog);
-    socket.emit("login", response.data[0][0].id_user);
     return response.data;
   } catch (error) {
     throw error;
@@ -61,6 +58,27 @@ export const getUserProfile = async (id) => {
     throw error;
   }
 };
+export const fetchNotifications = async (receiverId) => {
+  try {
+    const response = await axios.post(getRoute(routes.notifications), {
+      receiverId,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const checkFriendShip = async (senderId, receiverId) => {
+  try {
+    const response = await axios.post(getRoute(routes.checkFriendShip), {
+      senderId,
+      receiverId,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const sendFrRequest = async (senderId, receiverId, stare) => {
   try {
     const response = await axios.post(getRoute(routes.friendReq), {
@@ -68,11 +86,6 @@ export const sendFrRequest = async (senderId, receiverId, stare) => {
       receiverId,
       stare,
     });
-    const data = {
-      senderId: senderId,
-      receiverId: receiverId,
-    };
-    socket.emit("FrReq", data);
     return response.data;
   } catch (error) {
     throw error;
