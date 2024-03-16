@@ -4,6 +4,7 @@ import {
   SearchIconWrapper,
   StyledInputBase,
 } from "../../muiStyles/navBarStyle";
+import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,6 +24,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNotifications } from "../../functions/NotifContext";
 
 export default function NavBar() {
+  const [input, setInput] = React.useState("");
   const [idUser, setIdUser] = React.useState("");
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -102,6 +104,17 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      {" "}
+      <MenuItem onClick={() => navigate("/")}>
+        <IconButton
+          size="large"
+          aria-label="show 17 new notifications"
+          color="inherit"
+        >
+          <HomeIcon />
+        </IconButton>
+        <p>Home</p>{" "}
+      </MenuItem>
       <MenuItem onClick={() => navigate("/messages")}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={messageNotif} color="error">
@@ -164,8 +177,9 @@ export default function NavBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search..."
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => setInput(e.target.value)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

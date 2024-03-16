@@ -1,5 +1,5 @@
 import NavBar from "../../navBar/navBar";
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, Button } from "@mui/material";
 import * as React from "react";
 import { User } from "../../../classes/Clase";
 import { useParams } from "react-router-dom";
@@ -11,8 +11,8 @@ import {
 } from "../../../functions/dbAcctions";
 import NotFound from "../NotFound/NotFound";
 import "./profileStyle.css";
-import Button from "@mui/material/Button";
 import io from "socket.io-client";
+import Postare from "./postare/postare";
 const Profile = () => {
   const [user, setUser] = React.useState(User);
   const [id, setId] = React.useState("");
@@ -152,7 +152,7 @@ const Profile = () => {
 
         <Box>
           <h1 className="userData">{user.nume_cont}</h1>
-          <h1 className="userData">{infiintareCont}</h1>
+          <div className="userData">User since:{infiintareCont}</div>
           <Box style={{ display: "flex", justifyContent: "center" }}>
             {user.id_user !== id ? (
               <Box
@@ -191,7 +191,16 @@ const Profile = () => {
           </Box>
         </Box>
       </Box>
-      <Box></Box>
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Postare></Postare>
+      </Box>
     </>
   );
 };
