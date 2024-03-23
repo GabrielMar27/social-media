@@ -19,21 +19,19 @@ router.post("/", (req, res) => {
       }
 
       if (result.length > 0) {
-        // Dacă există deja o cerere de prietenie în sens invers, nu permitem crearea sau actualizarea cererii
         return res
           .status(400)
           .json({ error: "Cererea de prietenie există deja în sens invers." });
       } else {
-        // Dacă nu există o cerere de prietenie în sens invers, procedăm cu inserarea sau actualizarea cererii
         const timeStamp = new Date()
           .toISOString()
           .slice(0, 19)
           .replace("T", " ");
-
-        // Alegem interogarea în funcție de valoarea lui 'stare'
         let query =
           stare === 0
             ? "INSERT INTO prieten(stare, timestamp, sender_id, receiver_id) VALUES(?,?,?,?)"
+            : stare === 1
+            ? "UPDATE prieten SET stare=?, timestamp=? WHERE sender_id=? AND receiver_id=?"
             : "UPDATE prieten SET stare=?, timestamp=? WHERE sender_id=? AND receiver_id=?";
 
         con.query(
@@ -55,6 +53,11 @@ router.post("/", (req, res) => {
                 message: "Cererea de prietenie a fost actualizată cu succes.",
               });
             }
+            console.log(receiverId);
+            console.log(senderId);
+
+            console.log(stare);
+            console.log(result);
           }
         );
       }

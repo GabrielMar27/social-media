@@ -5,7 +5,7 @@ const con = require("../database");
 router.post("/", (req, res) => {
   const { senderId, receiverId } = req.body;
   con.query(
-    "SELECT stare FROM prieten WHERE (sender_id = ? AND receiver_id= ?) OR (sender_id = ? AND receiver_id = ?)",
+    "SELECT stare,sender_id,receiver_Id FROM prieten WHERE (sender_id = ? AND receiver_id= ?) OR (sender_id = ? AND receiver_id = ?)",
     [receiverId, senderId, senderId, receiverId],
     (err, result) => {
       if (err) {

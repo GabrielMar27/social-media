@@ -19,7 +19,11 @@ const Profile = () => {
   const [notFound, setNotFound] = React.useState(false);
   const { idUser } = useParams();
   const data = new Date(user.inregistrare_cont);
-  const [isFriend, setIsFriend] = React.useState();
+  const [friendshipStatus, setFriendshipStatus] = React.useState({
+    stare: 0,
+    sender_id: "",
+    receiver_Id: "",
+  });
   const an = data.getFullYear();
   const luni = [
     "Ian",
@@ -56,10 +60,11 @@ const Profile = () => {
             currentUserId,
             userProfile.id_user
           );
+          console.log(friendStatus);
           if (friendStatus && friendStatus.stare !== null) {
-            setIsFriend(friendStatus.result[0].stare);
+            setFriendshipStatus(friendStatus.result[0]);
           } else {
-            setIsFriend(null);
+            setFriendshipStatus(null);
           }
         }
       }
@@ -67,22 +72,86 @@ const Profile = () => {
     getUser();
   }, [idUser]);
   const buttonSwitch = () => {
-    switch (isFriend) {
+    console.log(friendshipStatus);
+    console.log(idUser);
+    console.log(idUser === friendshipStatus.sender_id);
+    switch (friendshipStatus?.stare) {
       case 0:
-        return (
-          <>
-            {" "}
-            <Button variant="contained" className="profileActions" disabled>
-              Friend Request Sent
-            </Button>
-          </>
-        );
+        if (friendshipStatus.sender_id === idUser) {
+          return (
+            <>
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "310px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  color="success"
+                  onClick={() => {
+                    sendFrRequest(
+                      friendshipStatus.sender_id,
+                      friendshipStatus.receiver_Id,
+                      1
+                    );
+                    window.location.reload();
+                  }}
+                >
+                  Accept
+                </Button>
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  color="error"
+                  onClick={() => {
+                    sendFrRequest(
+                      friendshipStatus.sender_id,
+                      friendshipStatus.receiver_Id,
+                      2
+                    );
+                    window.location.reload();
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </>
+          );
+        }
       case 1:
         return (
           <Button variant="contained" className="profileActions">
             Message
           </Button>
         );
+      case 2:
+        if (friendshipStatus.sender_id === idUser) {
+          return (
+            <>
+              <Button variant="contained" className="profileActions" disabled>
+                Friend Request Sent
+              </Button>
+            </>
+          );
+        } else
+          return (
+            <>
+              {" "}
+              <Button
+                variant="contained"
+                className="profileActions"
+                onClick={() => {
+                  sendFrRequest(id, user.id_user, 2);
+                  window.location.reload();
+                }}
+              >
+                Send Friend
+              </Button>
+            </>
+          );
       default:
         return (
           <>

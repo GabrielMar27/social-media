@@ -86,6 +86,7 @@ export const sendFrRequest = async (senderId, receiverId, stare) => {
       receiverId,
       stare,
     });
+    console.log(receiverId);
     return response.data;
   } catch (error) {
     throw error;
