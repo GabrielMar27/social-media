@@ -72,6 +72,7 @@ const Profile = () => {
     getUser();
   }, [idUser]);
   const buttonSwitch = () => {
+    console.log(friendshipStatus.stare);
     switch (friendshipStatus?.stare) {
       case 0:
         if (friendshipStatus.sender_id === idUser) {
@@ -115,6 +116,15 @@ const Profile = () => {
                   Delete
                 </Button>
               </Box>
+            </>
+          );
+        }
+        if (friendshipStatus.sender_id === id) {
+          return (
+            <>
+              <Button variant="contained" className="profileActions" disabled>
+                Friend Request Sent
+              </Button>
             </>
           );
         }

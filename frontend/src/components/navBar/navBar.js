@@ -23,7 +23,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNotifications } from "../../functions/NotifContext";
 import { searchUser } from "../../functions/dbAcctions";
-
+import SearchResultComponent from "./searchResult/searchResult";
 export default function NavBar() {
   const [input, setInput] = React.useState("");
   const [idUser, setIdUser] = React.useState("");
@@ -34,6 +34,22 @@ export default function NavBar() {
   const { notificationCount } = useNotifications();
   const [userName, setUserName] = React.useState([]);
   const [showResults, setShowResults] = React.useState(false);
+  const [searchResults, setSearchResults] = React.useState([]);
+
+  const handleSearch = async (query) => {
+    if (query.length > 0) {
+      try {
+        const results = await searchUser(query);
+        setSearchResults(results);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Eroare la căutarea utilizatorilor", error);
+      }
+    } else {
+      setShowResults(false);
+    }
+  };
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -164,14 +180,13 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+          {/* Logo și navigare */}
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
-            onClick={() => {
-              navigate("/");
-            }}
+            onClick={() => navigate("/")}
           >
             Social
           </Typography>
@@ -180,12 +195,21 @@ export default function NavBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              onKeyUp={(e) => searchUser(e.target.value)}
               placeholder="Search..."
               inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                handleSearch(e.target.value);
+              }}
             />
+            {showResults && (
+              <SearchResultComponent
+                key={searchResults.id_user}
+                searchResults={searchResults}
+              />
+            )}
           </Search>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
