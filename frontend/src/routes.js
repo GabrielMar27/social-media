@@ -6,7 +6,8 @@ export const routes = {
   uploadPFP: "/uploadPFP",
   friendReq: "/friendReq",
   checkFriendShip: "/checkFriendShip",
-  notifications:"/notifications"
+  notifications: "/notifications",
+  search: "/search",
 };
 
 export const getRoute = (route) => `${ORIGIN_URL}${route}`;

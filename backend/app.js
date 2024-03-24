@@ -8,6 +8,7 @@ const userProfile = require("./routes/userProfile");
 const friendReq = require("./routes/friendReq");
 const checkFriendShip = require("./routes/checkFriendShip");
 const getNotifications = require("./routes/getNotifications");
+const searchUser = require("./routes/searchUser");
 const multer = require("multer");
 
 //test
@@ -31,6 +32,7 @@ app.use("/uploadPFP", profilePicture);
 app.use("/friendReq", friendReq);
 app.use("/checkFriendShip", checkFriendShip);
 app.use("/notifications", getNotifications);
+app.use("/search", searchUser);
 app.use(userProfile);
 
 // const io = new Server(server, {

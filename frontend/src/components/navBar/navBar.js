@@ -22,6 +22,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useNotifications } from "../../functions/NotifContext";
+import { searchUser } from "../../functions/dbAcctions";
 
 export default function NavBar() {
   const [input, setInput] = React.useState("");
@@ -31,6 +32,8 @@ export default function NavBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [messageNotif, setMessageNotif] = React.useState(0);
   const { notificationCount } = useNotifications();
+  const [userName, setUserName] = React.useState([]);
+  const [showResults, setShowResults] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -177,6 +180,7 @@ export default function NavBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              onKeyUp={(e) => searchUser(e.target.value)}
               placeholder="Search..."
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => setInput(e.target.value)}

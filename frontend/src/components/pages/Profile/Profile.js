@@ -60,7 +60,7 @@ const Profile = () => {
             currentUserId,
             userProfile.id_user
           );
-          console.log(friendStatus);
+
           if (friendStatus && friendStatus.stare !== null) {
             setFriendshipStatus(friendStatus.result[0]);
           } else {
@@ -72,9 +72,6 @@ const Profile = () => {
     getUser();
   }, [idUser]);
   const buttonSwitch = () => {
-    console.log(friendshipStatus);
-    console.log(idUser);
-    console.log(idUser === friendshipStatus.sender_id);
     switch (friendshipStatus?.stare) {
       case 0:
         if (friendshipStatus.sender_id === idUser) {
@@ -199,6 +196,9 @@ const Profile = () => {
               border: "0.5px solid black",
             }}
           />
+          {console.log(user.id_user === id)}
+          {console.log(user.id_user)}
+          {console.log(id)}
           {user.id_user === id && (
             <input
               type="file"

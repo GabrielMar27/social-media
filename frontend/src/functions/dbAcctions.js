@@ -92,3 +92,17 @@ export const sendFrRequest = async (senderId, receiverId, stare) => {
     throw error;
   }
 };
+export const searchUser = async (userName) => {
+  try {
+    let response;
+    if (userName.trim().lenght !== 0) {
+      response = await axios.post(getRoute(routes.search), {
+        userName,
+      });
+      console.log(response.data);
+      return response.data;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
