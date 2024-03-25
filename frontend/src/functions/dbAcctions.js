@@ -86,7 +86,6 @@ export const sendFrRequest = async (senderId, receiverId, stare) => {
       receiverId,
       stare,
     });
-    console.log(receiverId);
     return response.data;
   } catch (error) {
     throw error;
@@ -102,6 +101,16 @@ export const searchUser = async (userName) => {
       console.log(response.data);
       return response.data;
     }
+  } catch (error) {
+    throw error;
+  }
+};
+export const newPost = async (postareNou) => {
+  try {
+    const response = await axios.post(getRoute(routes.newPost), {
+      postareNou,
+    });
+    return response.data;
   } catch (error) {
     throw error;
   }
