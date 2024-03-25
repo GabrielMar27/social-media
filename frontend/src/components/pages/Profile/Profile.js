@@ -13,7 +13,9 @@ import NotFound from "../NotFound/NotFound";
 import "./profileStyle.css";
 import io from "socket.io-client";
 import Postare from "./postare/postare";
+import NewPost from "./newPost/newPostPopUp";
 const Profile = () => {
+  const [newPostForm, setNewPostForm] = React.useState(false);
   const [user, setUser] = React.useState(User);
   const [id, setId] = React.useState("");
   const [notFound, setNotFound] = React.useState(false);
@@ -43,7 +45,13 @@ const Profile = () => {
 
   const zi = data.getDate();
   const infiintareCont = `${zi}-${luna}-${an}`;
+  const openNewPostPopup = () => {
+    setNewPostForm(true);
+  };
 
+  const CloseNewPostPopup = () => {
+    setNewPostForm(false);
+  };
   React.useEffect(() => {
     const getUser = async () => {
       const data = await getUserProfile(idUser);
@@ -72,109 +80,111 @@ const Profile = () => {
     getUser();
   }, [idUser]);
   const buttonSwitch = () => {
-    console.log(friendshipStatus.stare);
-    switch (friendshipStatus?.stare) {
-      case 0:
-        if (friendshipStatus.sender_id === idUser) {
-          return (
-            <>
-              <Box
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "310px",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  className="profileActions"
-                  color="success"
-                  onClick={() => {
-                    sendFrRequest(
-                      friendshipStatus.sender_id,
-                      friendshipStatus.receiver_Id,
-                      1
-                    );
-                    window.location.reload();
+    if (friendshipStatus !== null) {
+      switch (friendshipStatus.stare) {
+        case 0:
+          if (friendshipStatus.sender_id === idUser) {
+            return (
+              <>
+                <Box
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "310px",
                   }}
                 >
-                  Accept
+                  <Button
+                    variant="contained"
+                    className="profileActions"
+                    color="success"
+                    onClick={() => {
+                      sendFrRequest(
+                        friendshipStatus.sender_id,
+                        friendshipStatus.receiver_Id,
+                        1
+                      );
+                      window.location.reload();
+                    }}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className="profileActions"
+                    color="error"
+                    onClick={() => {
+                      sendFrRequest(
+                        friendshipStatus.sender_id,
+                        friendshipStatus.receiver_Id,
+                        2
+                      );
+                      window.location.reload();
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </>
+            );
+          }
+          if (friendshipStatus.sender_id === id) {
+            return (
+              <>
+                <Button variant="contained" className="profileActions" disabled>
+                  Friend Request Sent
                 </Button>
-                <Button
-                  variant="contained"
-                  className="profileActions"
-                  color="error"
-                  onClick={() => {
-                    sendFrRequest(
-                      friendshipStatus.sender_id,
-                      friendshipStatus.receiver_Id,
-                      2
-                    );
-                    window.location.reload();
-                  }}
-                >
-                  Delete
-                </Button>
-              </Box>
-            </>
-          );
-        }
-        if (friendshipStatus.sender_id === id) {
+              </>
+            );
+          }
+        case 1:
           return (
-            <>
-              <Button variant="contained" className="profileActions" disabled>
-                Friend Request Sent
-              </Button>
-            </>
-          );
-        }
-      case 1:
-        return (
-          <Button variant="contained" className="profileActions">
-            Message
-          </Button>
-        );
-      case 2:
-        if (friendshipStatus.sender_id === idUser) {
-          return (
-            <>
-              <Button variant="contained" className="profileActions" disabled>
-                Friend Request Sent
-              </Button>
-            </>
-          );
-        } else
-          return (
-            <>
-              {" "}
-              <Button
-                variant="contained"
-                className="profileActions"
-                onClick={() => {
-                  sendFrRequest(id, user.id_user, 2);
-                  window.location.reload();
-                }}
-              >
-                Send Friend
-              </Button>
-            </>
-          );
-      default:
-        return (
-          <>
-            {" "}
-            <Button
-              variant="contained"
-              className="profileActions"
-              onClick={() => {
-                sendFrRequest(id, user.id_user, 0);
-                window.location.reload();
-              }}
-            >
-              Send Friend
+            <Button variant="contained" className="profileActions">
+              Message
             </Button>
-          </>
-        );
+          );
+        case 2:
+          if (friendshipStatus.sender_id === idUser) {
+            return (
+              <>
+                <Button variant="contained" className="profileActions" disabled>
+                  Friend Request Sent
+                </Button>
+              </>
+            );
+          } else
+            return (
+              <>
+                {" "}
+                <Button
+                  variant="contained"
+                  className="profileActions"
+                  onClick={() => {
+                    sendFrRequest(id, user.id_user, 2);
+                    window.location.reload();
+                  }}
+                >
+                  Send Friend
+                </Button>
+              </>
+            );
+        default:
+      }
+    } else {
+      return (
+        <>
+          {" "}
+          <Button
+            variant="contained"
+            className="profileActions"
+            onClick={() => {
+              sendFrRequest(id, user.id_user, 0);
+              window.location.reload();
+            }}
+          >
+            Send Friend
+          </Button>
+        </>
+      );
     }
   };
   if (notFound) {
@@ -262,6 +272,7 @@ const Profile = () => {
                   variant="contained"
                   className="profileActions"
                   style={{ fontSize: "13px" }}
+                  onClick={() => openNewPostPopup()}
                 >
                   Make New Post
                 </Button>
@@ -270,6 +281,7 @@ const Profile = () => {
           </Box>
         </Box>
       </Box>
+      {newPostForm && <NewPost onClose={CloseNewPostPopup} />}
       <Box
         style={{
           display: "flex",

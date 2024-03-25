@@ -8,6 +8,7 @@ export const routes = {
   checkFriendShip: "/checkFriendShip",
   notifications: "/notifications",
   search: "/search",
+  newPost: "/newPost",
 };
 
 export const getRoute = (route) => `${ORIGIN_URL}${route}`;

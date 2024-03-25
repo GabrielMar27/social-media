@@ -9,13 +9,13 @@ const friendReq = require("./routes/friendReq");
 const checkFriendShip = require("./routes/checkFriendShip");
 const getNotifications = require("./routes/getNotifications");
 const searchUser = require("./routes/searchUser");
-const multer = require("multer");
+const newPost = require("./routes/createNewPost");
 
 //test
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
-//test
+
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -33,29 +33,8 @@ app.use("/friendReq", friendReq);
 app.use("/checkFriendShip", checkFriendShip);
 app.use("/notifications", getNotifications);
 app.use("/search", searchUser);
+app.use("/newPost", newPost);
 app.use(userProfile);
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// io.on("connection", (socket) => {
-//   socket.on("login", (id) => {
-//     socket.id = id;
-//     console.log(socket.id);
-//   });
-//   socket.on("FrReq", (data) => {
-//     console.log(data);
-//     const sender = data.senderId;
-//     const receiver = data.receiverId;
-//     console.log("sentFrto" + receiver);
-
-//     socket.broadcast.emit("receiveFr", sender); // Trimiteți notificarea la frontend
-//   });
-// });
 
 server.listen(3001, () => {
   console.log("Server is running on port 3001");
