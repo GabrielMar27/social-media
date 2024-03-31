@@ -216,9 +216,6 @@ const Profile = () => {
               border: "0.5px solid black",
             }}
           />
-          {console.log(user.id_user === id)}
-          {console.log(user.id_user)}
-          {console.log(id)}
           {user.id_user === id && (
             <input
               type="file"

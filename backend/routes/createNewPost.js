@@ -3,11 +3,11 @@ const router = express.Router();
 const con = require("../database");
 
 router.post("/", (req, res) => {
-  const { media_postare, titlu_postare, text_postare, id_user } = req.body;
+  const { media_postare, titlu_postare, id_user } = req.body;
   const timeStamp = new Date().toISOString().slice(0, 19).replace("T", " ");
   const postData = {
     titlu_postare,
-    text_postare,
+
     id_user,
     timeStamp: timeStamp,
   };
