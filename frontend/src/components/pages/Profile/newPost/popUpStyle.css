@@ -5,6 +5,14 @@
   align-items: center;
   margin-bottom: 10px;
 }
+
+.popup-Body {
+  display: flex;
+  justify-content: center;
+  align-items: space-between;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
 .popup-container {
   position: fixed;
   top: 0;
