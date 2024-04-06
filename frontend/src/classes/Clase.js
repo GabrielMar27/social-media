@@ -17,10 +17,9 @@ export const User = {
   data_nastere: "",
 };
 export const postareNou = {
-  media_postare: "",
-  titlu_postare: "",
   text_postare: "",
   id_user: "",
+  media_postare: [],
 };
 export const postare = {
   id_postare: 0,

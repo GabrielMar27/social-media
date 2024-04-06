@@ -107,6 +107,7 @@ export const searchUser = async (userName) => {
 };
 export const newPost = async (postareNou) => {
   try {
+    console.log(postareNou);
     const response = await axios.post(getRoute(routes.newPost), {
       postareNou,
     });

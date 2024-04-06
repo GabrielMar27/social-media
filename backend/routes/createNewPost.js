@@ -3,14 +3,14 @@ const router = express.Router();
 const con = require("../database");
 
 router.post("/", (req, res) => {
-  const { media_postare, titlu_postare, text_postare, id_user } = req.body;
+  const { postareNou } = req.body;
   const timeStamp = new Date().toISOString().slice(0, 19).replace("T", " ");
   const postData = {
-    titlu_postare,
-    text_postare,
-    id_user,
+    text_postare: postareNou.text_postare,
+    id_user: postareNou.id_user,
     timeStamp: timeStamp,
   };
+  console.log(postData);
   con.query("INSERT INTO postari SET ?", postData, (err, result) => {
     if (err) {
       console.log(err);
@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
       });
     } else {
       const id_postare = result.insertId;
-      const poze = media_postare.map((poza) => {
+      const poze = postareNou.media_postare.map((poza) => {
         return new Promise((resolve, reject) => {
           const photoData = {
             id_postare,
