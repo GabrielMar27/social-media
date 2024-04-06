@@ -1,45 +1,73 @@
-import React, { useState } from "react";
-import { Button, FormLabel, TextField } from "@mui/material";
+import {
+  Button,
+  FormLabel,
+  TextField,
+  TextareaAutosize as BaseTextareaAutosize,
+} from "@mui/material";
 import { styled } from "@mui/system";
 import "./popUpStyle.css";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import Carousel from "react-material-ui-carousel";
-import { TextareaAutosize } from "@mui/material";
 
 const NewPost = ({ onClose }) => {
-  const [text_postare, setTextPostare] = useState("");
-  const [media_postare, setMedia_postare] = useState([]);
+  const blue = {
+    100: "#DAECFF",
+    200: "#b6daff",
+    400: "#3399FF",
+    500: "#007FFF",
+    600: "#0072E5",
+    900: "#003A75",
+  };
 
-  const handleImageChange = (e) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files).slice(
-        0,
-        4 - media_postare.length
-      ); // Limităm numărul de fișiere selectate dacă depășește limita
-
-      // Verificăm dacă numărul total de imagini va depăși limita
-      if (media_postare.length + files.length > 4) {
-        alert("Nu puteți încărca mai mult de 4 imagini.");
-        return; // Oprim executia funcției dacă limita este depășită
-      }
-
-      files.forEach((file) => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-          setMedia_postare((prevImages) => [...prevImages, reader.result]);
-        };
-
-        reader.readAsDataURL(file);
-      });
+  const grey = {
+    50: "#F3F6F9",
+    100: "#E5EAF2",
+    200: "#DAE2ED",
+    300: "#C7D0DD",
+    400: "#B0B8C4",
+    500: "#9DA8B7",
+    600: "#6B7A90",
+    700: "#434D5B",
+    800: "#303740",
+    900: "#1C2025",
+  };
+  const Textarea = styled(BaseTextareaAutosize)(
+    ({ theme }) => `
+    box-sizing: border-box;
+    width: 320px; 
+    height: 100px;
+    resize: none;
+    overflow: auto;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
+    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+    box-shadow: 0px 2px 2px ${
+      theme.palette.mode === "dark" ? grey[900] : grey[50]
+    };
+    @media (max-width: 600px) {
+      width: 100%; // Lățimea se ajustează la dimensiunea containerului
+      height: 80px; // Înălțime mai mică pentru spațiu limitat
     }
-  };
-  const removeImage = (indexToRemove) => {
-    setMedia_postare((prevImages) =>
-      prevImages.filter((_, index) => index !== indexToRemove)
-    );
-  };
-
+    &:hover {
+      border-color: ${blue[400]};
+    }
+  
+    &:focus {
+      border-color: ${blue[400]};
+      box-shadow: 0 0 0 3px ${
+        theme.palette.mode === "dark" ? blue[600] : blue[200]
+      };
+    }
+  
+    // firefox
+    &:focus-visible {
+      outline: 0;
+    }
+  `
+  );
   return (
     <div className="popup-container">
       <div className="popup">
@@ -52,45 +80,15 @@ const NewPost = ({ onClose }) => {
           </Button>
         </div>
         <div className="popup-Body">
-          <TextField
-            id="standard-basic"
-            label="Titlu"
-            variant="outlined"
-            onChange={(e) => setTextPostare(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="info"
-            component="label"
+          <TextField id="standard-basic" label="Title" variant="outlined" />
+          <Textarea
             style={{ marginTop: "10px" }}
-          >
-            <AddPhotoAlternateIcon /> Adaugă o imagine nouă
-            <input type="file" multiple hidden onChange={handleImageChange} />
-          </Button>
-          {media_postare.length > 0 && (
-            <div>
-              {media_postare.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`upload-${index}`}
-                  style={{ width: "100px", height: "auto", cursor: "pointer" }}
-                  onClick={() => removeImage(index)}
-                />
-              ))}
-            </div>
-          )}
-          <Button
-            variant="contained"
-            color="info"
-            style={{ marginTop: "20px" }}
-            onClick={() => {
-              console.log(media_postare);
-              console.log(text_postare);
-            }}
-          >
-            POSTEAZĂ
-          </Button>
+            fixated
+            aria-label="Demo input"
+            minRows={3}
+            variant="outlined"
+            placeholder="What's in your mind"
+          />
         </div>
       </div>
     </div>
